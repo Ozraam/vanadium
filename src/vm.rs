@@ -1,9 +1,9 @@
 use crate::instruction::Opcode;
 
 pub struct VM {
-    registers: [i32; 32],
+    pub registers: [i32; 32],
     pc: usize,
-    program: Vec<u8>,
+    pub program: Vec<u8>,
     remainder: u32,
     equal_flag: bool,
 }
@@ -154,6 +154,29 @@ impl VM {
         let opcode = Opcode::from(self.program[self.pc]);
         self.pc += 1;
         opcode
+    }
+
+    pub fn add_byte(&mut self, byte: u8) {
+        self.program.push(byte);
+    }
+
+    pub fn display_registers_square(&self) {
+        let side_width = (self.registers.len() as f64).sqrt().ceil() as usize;
+        for (i, register) in self.registers.iter().enumerate() {
+            print!("{:03}: {:10} ", i, register);
+            if (i + 1) % side_width == 0 {
+                println!();
+            }
+        }
+    }
+
+    pub fn display_program_as_hex(&self) {
+        for (i, byte) in self.program.iter().enumerate() {
+            print!("{:02X} ", byte);
+            if (i + 1) % 4 == 0 {
+                println!();
+            }
+        }
     }
 }
 
