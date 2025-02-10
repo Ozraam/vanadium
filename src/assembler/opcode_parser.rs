@@ -3,7 +3,7 @@ use super::opcode::Token;
 use crate::instruction::Opcode;
 
 named!(
-    opcode_load<CompleteStr, Token>,
+    pub opcode_load<CompleteStr, Token>,
     do_parse!(
         tag!("load") >> (Token::Op{code: Opcode::LOAD})
     )   
