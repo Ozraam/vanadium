@@ -56,6 +56,40 @@ impl REPL {
                     self.vm.display_registers_square();
                     println!("End of Register Listing")
                 }
+                ".help" => {
+                    println!("Vanadium REPL Help");
+                    println!(".help - Show this help message");
+                    println!(".quit - Quit the REPL");
+                    println!(".history - Show command history");
+                    println!(".program - Show the program in the VM");
+                    println!(".registers - Show the contents of the registers");
+                    println!(".inspect - Show the VM state");
+                    println!(".help_instruction - Show the Vanadium instruction set");
+                }
+                ".inspect" => {
+                    println!("Inspecting the VM");
+                    println!("{:?}", self.vm);
+                }
+                ".help_instrucion" => {
+                    println!("Vanadium Instruction Set");
+                    println!("LOAD <register> <value> - Load a value into a register");
+                    println!("ADD <register1> <register2> <register3> - Add the values in register2 and register3 and store the result in register1");
+                    println!("SUB <register1> <register2> <register3> - Subtract the values in register2 and register3 and store the result in register1");
+                    println!("MUL <register1> <register2> <register3> - Multiply the values in register2 and register3 and store the result in register1");
+                    println!("DIV <register1> <register2> <register3> - Divide the values in register2 and register3 and store the result in register1");
+                    println!("HLT - Halt the program");
+                    println!("JMP <value> - Jump to a specific location in the program");
+                    println!("JMPF <value> - Jump forward a specific number of instructions");
+                    println!("JMPB <value> - Jump backward a specific number of instructions");
+                    println!("EQ <register1> <register2> <register3> - Compare the values in register2 and register3 and store 1 in register1 if they are equal, otherwise store 0");
+                    println!("NEQ <register1> <register2> <register3> - Compare the values in register2 and register3 and store 1 in register1 if they are not equal, otherwise store 0");
+                    println!("GT <register1> <register2> <register3> - Compare the values in register2 and register3 and store 1 in register1 if register2 is greater than register3, otherwise store 0");
+                    println!("LT <register1> <register2> <register3> - Compare the values in register2 and register3 and store 1 in register1 if register2 is less than register3, otherwise store 0");
+                    println!("GTE <register1> <register2> <register3> - Compare the values in register2 and register3 and store 1 in register1 if register2 is greater than or equal to register3, otherwise store 0");
+                    println!("LTE <register1> <register2> <register3> - Compare the values in register2 and register3 and store 1 in register1 if register2 is less than or equal to register3, otherwise store 0");
+                    println!("NOP - Do nothing");
+                    println!("End of Instruction Set");
+                }
                 _ => {
                     let parsed_program = program(CompleteStr(buffer));
                     if !parsed_program.is_ok() {

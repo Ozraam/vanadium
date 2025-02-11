@@ -1,5 +1,6 @@
 use crate::instruction::Opcode;
 
+#[derive(Debug)]
 pub struct VM {
     pub registers: [i32; 32],
     pc: usize,

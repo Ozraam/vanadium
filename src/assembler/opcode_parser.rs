@@ -6,7 +6,14 @@ named!(
     pub opcode_load<CompleteStr, Token>,
     do_parse!(
         tag!("load") >> (Token::Op{code: Opcode::LOAD})
-    )   
+    )
+);
+
+named!(
+    pub opcode_mul<CompleteStr, Token>,
+    do_parse!(
+        tag!("mul") >> (Token::Op{code: Opcode::MUL})
+    )
 );
 
 mod tests {
