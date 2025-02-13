@@ -1,35 +1,33 @@
 use nom::types::CompleteStr;
+use nom::alpha1;
 use super::opcode::Token;
 use crate::instruction::Opcode;
 
-named!(
-    pub opcode_load<CompleteStr, Token>,
+named!(pub opcode<CompleteStr, Token>,
     do_parse!(
-        tag!("load") >> (Token::Op{code: Opcode::LOAD})
+        opcode: alpha1! >>
+        (
+          Token::Op{code: Opcode::from(opcode)}
+        )
     )
-);
-
-named!(
-    pub opcode_mul<CompleteStr, Token>,
-    do_parse!(
-        tag!("mul") >> (Token::Op{code: Opcode::MUL})
-    )
-);
+  );
 
 mod tests {
-    use super::*;
+    #![allow(unused_imports)]
+    use super::opcode;
+    use crate::instruction::Opcode;
+    use crate::assembler::opcode::Token;
+    use nom::types::CompleteStr;
 
     #[test]
-    fn test_opcode_load() {
-        // First tests that the opcode is detected and parsed correctly
-        let result = opcode_load(CompleteStr("load"));
+    fn test_opcode() {
+        let result = opcode(CompleteStr("load"));
         assert_eq!(result.is_ok(), true);
         let (rest, token) = result.unwrap();
-        assert_eq!(token, Token::Op{code: Opcode::LOAD});
+        assert_eq!(token, Token::Op { code: Opcode::LOAD });
         assert_eq!(rest, CompleteStr(""));
-
-        // Tests that an invalid opcode isn't recognized
-        let result = opcode_load(CompleteStr("aold"));
-        assert_eq!(result.is_ok(), false);
+        let result = opcode(CompleteStr("aold"));
+        let (_, token) = result.unwrap();
+        assert_eq!(token, Token::Op { code: Opcode::IGL });
     }
 }

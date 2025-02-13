@@ -17,19 +17,15 @@ impl AssemblerInstruction {
     pub fn to_bytes(&self) -> Vec<u8> {
         let mut results = vec![];
         match &self.opcode {
-            Token::Op { code } => results.push(code.clone() as u8),
+            Token::Op { code } => results.push(*code as u8),
             _ => panic!("Opcode must be an Op variant"),
         }
 
-        for operand in [&self.operand1, &self.operand2, &self.operand3].iter() {
-
-            match operand {
-                Some(t) => AssemblerInstruction::extract_operand(t, &mut results),
-                None => {},
-            }
+        for operand in [&self.operand1, &self.operand2, &self.operand3].iter().copied().flatten() {
+            AssemblerInstruction::extract_operand(operand, &mut results)
         }
 
-        return results;
+        results
     }
 
     fn extract_operand(t: &Token, results: &mut Vec<u8>) {

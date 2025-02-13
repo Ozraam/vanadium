@@ -23,7 +23,7 @@ named!(
         instructions: many1!(instruction_one) >>
         (
             Program {
-                instructions: instructions
+                instructions
             }
         )
     )

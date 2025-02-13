@@ -9,6 +9,12 @@ pub struct VM {
     equal_flag: bool,
 }
 
+impl Default for VM {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl VM {
     pub fn new() -> VM {
         VM {
@@ -43,7 +49,7 @@ impl VM {
             }
             Opcode::LOAD => {
                 let register = self.next_8_bits() as usize;
-                let number = self.next_16_bits() as u16;
+                let number = self.next_16_bits();
                 self.registers[register] = number as i32;
             }
             Opcode::ADD => {
