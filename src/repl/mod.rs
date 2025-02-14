@@ -74,7 +74,7 @@ impl REPL {
                     println!("Inspecting the VM");
                     println!("{:?}", self.vm);
                 }
-                ".help_instrucion" => {
+                ".help_instruction" => {
                     println!("Vanadium Instruction Set");
                     println!("LOAD <register> <value> - Load a value into a register");
                     println!("ADD <register1> <register2> <register3> - Add the values in register2 and register3 and store the result in register1");
@@ -102,6 +102,8 @@ impl REPL {
                             continue;
                         }
                     };
+
+                    println!("Parsed program: {:?}", parsed_program);
                     
                     self.vm.program.append(&mut parsed_program.to_bytes());
                     self.vm.run_once();

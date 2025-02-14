@@ -89,37 +89,37 @@ impl VM {
                 let register1 = self.registers[self.next_8_bits() as usize];
                 let register2 = self.registers[self.next_8_bits() as usize];
                 self.equal_flag = register1 == register2;
-                self.next_8_bits();
+                // self.next_8_bits();
             }
             Opcode::NEQ => {
                 let register1 = self.registers[self.next_8_bits() as usize];
                 let register2 = self.registers[self.next_8_bits() as usize];
                 self.equal_flag = register1 != register2;
-                self.next_8_bits();
+                // self.next_8_bits();
             }
             Opcode::GT => {
                 let register1 = self.registers[self.next_8_bits() as usize];
                 let register2 = self.registers[self.next_8_bits() as usize];
                 self.equal_flag = register1 > register2;
-                self.next_8_bits();
+                // self.next_8_bits();
             }
             Opcode::LT => {
                 let register1 = self.registers[self.next_8_bits() as usize];
                 let register2 = self.registers[self.next_8_bits() as usize];
                 self.equal_flag = register1 < register2;
-                self.next_8_bits();
+                // self.next_8_bits();
             }
             Opcode::GTQ => {
                 let register1 = self.registers[self.next_8_bits() as usize];
                 let register2 = self.registers[self.next_8_bits() as usize];
                 self.equal_flag = register1 >= register2;
-                self.next_8_bits();
+                // self.next_8_bits();
             }
             Opcode::LTQ => {
                 let register1 = self.registers[self.next_8_bits() as usize];
                 let register2 = self.registers[self.next_8_bits() as usize];
                 self.equal_flag = register1 <= register2;
-                self.next_8_bits();
+                // self.next_8_bits();
             }
             Opcode::JEQ => {
                 let target = self.registers[self.next_8_bits() as usize] as usize;
@@ -127,7 +127,7 @@ impl VM {
                     self.pc = target;
                     return true;
                 }
-                self.next_16_bits();
+                // self.next_16_bits();
             }
             Opcode::JNEQ => {
                 let target = self.registers[self.next_8_bits() as usize] as usize;
@@ -135,7 +135,7 @@ impl VM {
                     self.pc = target;
                     return true;
                 }
-                self.next_16_bits();
+                // self.next_16_bits();
             }
             _ => {
                 println!("Unrecognized opcode found! Terminating!");

@@ -1,7 +1,7 @@
 use nom::types::CompleteStr;
 
 use super::opcode::Token;
-use super::opcode_parser::opcode_load;
+use super::opcode_parser::opcode;
 use super::register_parser::register;
 use super::operand_parser::integer_operand;
 
@@ -48,9 +48,9 @@ impl AssemblerInstruction {
     }
 }
 
-named!(pub instruction_one<CompleteStr, AssemblerInstruction>,
+named!(instruction_one<CompleteStr, AssemblerInstruction>,
     do_parse!(
-        o: opcode_load >>
+        o: opcode >>
         r: register >>
         i: integer_operand >>
         (
@@ -60,6 +60,77 @@ named!(pub instruction_one<CompleteStr, AssemblerInstruction>,
                 operand2: Some(i),
                 operand3: None
             }
+        )
+    )
+);
+
+named!(instruction_two<CompleteStr, AssemblerInstruction>,
+    do_parse!(
+        o: opcode >>
+        (
+            AssemblerInstruction{
+                opcode: o,
+                operand1: None,
+                operand2: None,
+                operand3: None
+            }
+        )
+    )
+);
+
+named!(instruction_three<CompleteStr, AssemblerInstruction>,
+    do_parse!(
+        o: opcode >>
+        r1: register >>
+        r2: register >>
+        r3: register >>
+        (
+            AssemblerInstruction{
+                opcode: o,
+                operand1: Some(r1),
+                operand2: Some(r2),
+                operand3: Some(r3)
+            }
+        )
+    )
+);
+
+named!(instruction_four<CompleteStr, AssemblerInstruction>,
+    do_parse!(
+        o: opcode >>
+        r1: register >>
+        r2: register >>
+        (
+            AssemblerInstruction{
+                opcode: o,
+                operand1: Some(r1),
+                operand2: Some(r2),
+                operand3: None
+            }
+        )
+    )
+);
+
+named!(instruction_five<CompleteStr, AssemblerInstruction>,
+    do_parse!(
+        o: opcode >>
+        r1: register >>
+        (
+            AssemblerInstruction{
+                opcode: o,
+                operand1: Some(r1),
+                operand2: None,
+                operand3: None
+            }
+        )
+    )
+);
+
+named!(pub instruction<CompleteStr, AssemblerInstruction>,
+    do_parse!(
+        ins: alt!(instruction_one | instruction_three | instruction_four | instruction_five | instruction_two) >>
+        (
+            ins
         )
     )
 );
@@ -80,6 +151,23 @@ mod tests {
                     opcode: Token::Op { code: Opcode::LOAD },
                     operand1: Some(Token::Register { reg_num: 0 }),
                     operand2: Some(Token::IntegerOperand { value: 100 }),
+                    operand3: None
+                }
+            ))
+        );
+    }
+
+    #[test]
+    fn test_parse_instruction_form_two() {
+        let result = instruction_two(CompleteStr("hlt\n"));
+        assert_eq!(
+            result,
+            Ok((
+                CompleteStr(""),
+                AssemblerInstruction {
+                    opcode: Token::Op { code: Opcode::HLT },
+                    operand1: None,
+                    operand2: None,
                     operand3: None
                 }
             ))
