@@ -163,7 +163,7 @@ mod tests {
         assert_eq!(
             result,
             Ok((
-                CompleteStr(""),
+                CompleteStr("\n"),
                 AssemblerInstruction {
                     opcode: Token::Op { code: Opcode::HLT },
                     operand1: None,
